@@ -26,7 +26,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             usuario usuario = new usuario();
             if (jsonRespuesta.IsSuccessful)
             {
-                if (jsonRespuesta.Content != null)
+                if (jsonRespuesta.Content != "null")
                 {
                     JObject jObject = JObject.Parse(jsonRespuesta.Content);
                     string resul = jObject.ToString();
