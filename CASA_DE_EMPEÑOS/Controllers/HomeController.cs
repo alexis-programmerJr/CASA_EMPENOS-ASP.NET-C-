@@ -11,6 +11,10 @@ namespace CASA_DE_EMPEÑOS.Controllers
     {
         public ActionResult Index()
         {
+            if(usuario.SessionStatus == false)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             ViewBag.NombreUsuario = usuario.datosUsuarioActivo.nombre;
             ViewBag.TipoUsuario = usuario.datosUsuarioActivo.tipo;
             return View();
@@ -18,6 +22,10 @@ namespace CASA_DE_EMPEÑOS.Controllers
 
         public ActionResult About()
         {
+            if (usuario.SessionStatus == false)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             ViewBag.Message = "Your application description page.";
 
             return View();
@@ -25,6 +33,10 @@ namespace CASA_DE_EMPEÑOS.Controllers
 
         public ActionResult Contact()
         {
+            if (usuario.SessionStatus == false)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             ViewBag.Message = "Your contact page.";
 
             return View();

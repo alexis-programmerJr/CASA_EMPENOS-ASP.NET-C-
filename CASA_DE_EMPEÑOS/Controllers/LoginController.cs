@@ -21,6 +21,10 @@ namespace CASA_DE_EMPEÑOS.Controllers
                     FirstEnter = false;
                     return View();
                 }
+                if (_usuario.nombre == null || _usuario.contrasena == null)
+                {
+                    return View();
+                }
                 usuario_.IniciarSesion(_usuario);
                 if (usuario.SessionStatus == true)
                 {
