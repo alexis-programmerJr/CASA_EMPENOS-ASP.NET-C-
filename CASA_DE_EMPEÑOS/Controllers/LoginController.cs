@@ -9,13 +9,27 @@ namespace CASA_DE_EMPEÑOS.Controllers
 {
     public class LoginController : Controller
     {
+        static bool FirstEnter = true;
         usuario usuario_ = new usuario();
         // GET: Login
-        public ActionResult Index(usuario usuario)
+        public ActionResult Index(usuario _usuario)
         {
-            if (usuario == null )
+            if (usuario.SessionStatus == false)
             {
-                Buscar_usuario();
+                if (FirstEnter)
+                {
+                    FirstEnter = false;
+                    return View();
+                }
+                usuario_.IniciarSesion(_usuario);
+                if (usuario.SessionStatus == true)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
             }
             return View();
         }
@@ -90,10 +104,6 @@ namespace CASA_DE_EMPEÑOS.Controllers
             {
                 return View();
             }
-        }
-        void Buscar_usuario() 
-        {
-
         }
 
     }
