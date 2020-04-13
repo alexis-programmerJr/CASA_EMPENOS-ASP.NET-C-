@@ -4,35 +4,19 @@
 <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
 <br>
 <br>
 <div class="container-fluid well span6">
     <div class="row-fluid">
         <div class="span2">
-            <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
+            <img src="https://scontent.fcen1-1.fna.fbcdn.net/v/t1.0-9/61763841_1701939573285217_3737773595187740672_o.jpg?_nc_cat=107&_nc_sid=09cbfe&_nc_ohc=9dAiRoQmpkYAX9npD3D&_nc_ht=scontent.fcen1-1.fna&oh=3a56f7d5846b6fe446a10ce389d52247&oe=5EBBF7D2" class="img-circle">
         </div>
 
         <div class="span8">
-            <h3>User Name</h3>
-            <h6>Email: MyEmail@servidor.com</h6>
-            <h6>Ubication: Colombia</h6>
-            <h6>Old: 1 Year</h6>
-            <h6><a href="#">More... </a></h6>
+            <h3>@ViewBag.NombreUsuario</h3>
+            <h6>Tipo de usuario: </h6>@ViewBag.TipoUsuario
         </div>
-
-        <div class="span2">
-            <div class="btn-group">
-                <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
-                    Action
-                    <span class="icon-cog icon-white"></span><span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="#"><span class="icon-wrench"></span> Modify</a></li>
-                    <li><a href="#"><span class="icon-trash"></span> Delete</a></li>
-                </ul>
-            </div>
-        </div>
+        <li><a href="@Url.Action("Contact", "Home")">Editar perfil</a></li>
+        <li><a href="@Url.Action("About", "Home")">Lista clientes</a></li>
     </div>
 </div>

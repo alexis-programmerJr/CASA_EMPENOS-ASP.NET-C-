@@ -11,8 +11,8 @@ namespace CASA_DE_EMPEÑOS.Controllers
     {
         public ActionResult Index()
         {
-            conexion conexion_ = new conexion();
-            conexion_.Prueba();
+            ViewBag.NombreUsuario = usuario.datosUsuarioActivo.nombre;
+            ViewBag.TipoUsuario = usuario.datosUsuarioActivo.tipo;
             return View();
         }
 

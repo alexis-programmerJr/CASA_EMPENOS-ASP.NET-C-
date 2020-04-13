@@ -2,16 +2,31 @@
 
 @using (Html.BeginForm("Index", "Login"))
 {
-    <form>
-        <div class="form-group">
-            <label for="exampleInputEmail1">Nombre de usuario</label>
-            @Html.TextBoxFor(x => x.nombre)
-        </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            @Html.TextBoxFor(x => x.contrasena)
-        </div>
+    <link href="~/CSS/Styles.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
 
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+            <!-- Icon -->
+            <div class="fadeIn first">
+                <img src="http://infoplugins.com/wp-content/uploads/2018/02/logo-rename-wp-login.php-infoplugins.png" id="icon" alt="User Icon" />
+            </div>
+            <!-- Login Form -->
+            <form>
+                @Html.TextBoxFor(x => x.nombre, new { @class = "fadeIn second" })
+                @*<input type="text" id="login" class="fadeIn second" name="login" placeholder="login">*@
+                @Html.TextBoxFor(x => x.contrasena,new { @class = "fadeIn third" })
+                @*<input type="text" id="password" class="fadeIn third" name="login" placeholder="password">*@
+                <input type="submit" class="fadeIn fourth" value="Log In">
+            </form>
+            <!-- Remind Passowrd -->
+            <div id="formFooter">
+                <a class="underlineHover" href="#">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
 }
