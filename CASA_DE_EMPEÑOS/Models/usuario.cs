@@ -8,24 +8,26 @@ namespace CASA_DE_EMPEÑOS.Models
 {
     public class usuario
     {
-     public usuario() 
+        public usuario()
         {
-           
+
         }
         UsuarioBD usuarioBD = new UsuarioBD();
-        protected string id { get; set; }
+        public string id { get; set; }
         public string nombre { get; set; }
-        public string  contrasena { get; set; }
+        public string contrasena { get; set; }
         public string tipo { get; set; }
-        public string registrado { get; set; }
+        public string date { get; set; }
+        public string status { get; set; }
+        public string correo { get; set; }
         public static bool SessionStatus = false;
         public static bool EsAdmin;
         public static usuario datosUsuarioActivo;
-         public void IniciarSesion(usuario usu) 
+        public void IniciarSesion(usuario usu)
         {
             var respuestaApi = this.usuarioBD.BuscarPorNombreApi(usu.nombre);
-            datosUsuarioActivo = this.usuarioBD.Tranformar(respuestaApi);
-            if (ValidarCredenciales(datosUsuarioActivo.nombre, datosUsuarioActivo.contrasena,usu))
+            datosUsuarioActivo = this.usuarioBD.TranformarUno(respuestaApi);
+            if (ValidarCredenciales(datosUsuarioActivo.nombre, datosUsuarioActivo.contrasena, usu))
             {
                 SessionStatus = true;
             }
@@ -35,7 +37,7 @@ namespace CASA_DE_EMPEÑOS.Models
             }
 
         }
-        bool ValidarCredenciales(string nombre, string contraseña,usuario usu)
+        bool ValidarCredenciales(string nombre, string contraseña, usuario usu)
         {
             if (nombre == usu.nombre)
             {
@@ -49,6 +51,12 @@ namespace CASA_DE_EMPEÑOS.Models
                 }
             }
             return false;
+        }
+
+        public List<usuario> cargarlista() 
+        {
+           var LisUsu = usuarioBD.BuscarTodos();
+           return usuarioBD.TranformarTodos(LisUsu);
         }
     }
 }
