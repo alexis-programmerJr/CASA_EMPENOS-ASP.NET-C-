@@ -53,10 +53,14 @@ namespace CASA_DE_EMPEÑOS.Models
             return false;
         }
 
-        public List<usuario> cargarlista() 
+        public List<usuario> cargarlista()
         {
-           var LisUsu = usuarioBD.BuscarTodos();
-           return usuarioBD.TranformarTodos(LisUsu);
+            var LisUsu = usuarioBD.BuscarTodos();
+            return usuarioBD.TranformarTodos(LisUsu);
+        }
+        public usuario Actualizar(string id,usuario usuario) 
+        {
+            return usuarioBD.Actualizar(id,usuario);
         }
     }
 }

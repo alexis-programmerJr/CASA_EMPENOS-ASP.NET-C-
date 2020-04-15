@@ -1,5 +1,4 @@
-﻿using CASA_DE_EMPEÑOS.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,31 +6,27 @@ using System.Web.Mvc;
 
 namespace CASA_DE_EMPEÑOS.Controllers
 {
-    public class UsuarioController : Controller
+    public class ClienteController : Controller
     {
-        usuario usuario_ = new usuario();
-        // GET: ListaUsuario
+        // GET: Cliente
         public ActionResult Index()
         {
-            List<usuario> ListaUsuarios = usuario_.cargarlista();
-            return View(ListaUsuarios);
+            return View();
         }
 
-        // GET: ListaUsuario/Details/5
-        [HttpGet]
-        public ActionResult Details(usuario usuario)
+        // GET: Cliente/Details/5
+        public ActionResult Details(int id)
         {
-            
-            return View(usuario);
+            return View();
         }
 
-        // GET: ListaUsuario/Create
+        // GET: Cliente/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ListaUsuario/Create
+        // POST: Cliente/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -47,22 +42,21 @@ namespace CASA_DE_EMPEÑOS.Controllers
             }
         }
 
-        // GET: ListaUsuario/Edit/5
-        [HttpGet]
-        public ActionResult Edit(usuario usuario)
+        // GET: Cliente/Edit/5
+       
+        public ActionResult Edit(int id)
         {
-            return View(usuario);
+            return View();
         }
 
-        // POST: ListaUsuario/Edit/5
+        // POST: Cliente/Edit/5
         [HttpPost]
-        public ActionResult Edit(string id, usuario usuario)
+        public ActionResult Edit(int id, FormCollection collection)
         {
             try
             {
                 // TODO: Add update logic here
-                usuario usuario_ = new usuario();
-                usuario_.Actualizar(usuario.id,usuario);
+
                 return RedirectToAction("Index");
             }
             catch
@@ -71,13 +65,13 @@ namespace CASA_DE_EMPEÑOS.Controllers
             }
         }
 
-        // GET: ListaUsuario/Delete/5
+        // GET: Cliente/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: ListaUsuario/Delete/5
+        // POST: Cliente/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
