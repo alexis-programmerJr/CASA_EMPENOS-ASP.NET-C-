@@ -37,8 +37,11 @@ namespace CASA_DE_EMPEÑOS.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-
+                usuario usuario = new usuario();
+                usuario.nombre = collection.Get("nombre");
+                usuario.contrasena = collection.Get("contrasena");
+                usuario.tipo = collection.Get("tipo");
+                usuario.Registrar(usuario);
                 return RedirectToAction("Index");
             }
             catch

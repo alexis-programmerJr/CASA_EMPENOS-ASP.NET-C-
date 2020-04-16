@@ -22,7 +22,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             return response;
         }
 
-        virtual public usuario TranformarUno(IRestResponse jsonRespuesta) 
+        virtual public usuario TranformarUno(IRestResponse jsonRespuesta)
         {
             usuario usuario = new usuario();
             if (jsonRespuesta.IsSuccessful)
@@ -36,12 +36,28 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             }
             return usuario;
         }
-        virtual public IRestResponse BuscarTodos() 
+        virtual public IRestResponse BuscarTodos()
         {
             var restClient = new RestClient("http://localhost:3000/");
             var request = new RestRequest(Method.GET);
             request.Resource = this.urlController;
 
+            var response = restClient.Execute(request);
+            return response;
+        }
+        virtual public IRestResponse RegistarApi(usuario usuario)
+        {
+            var restClient = new RestClient("http://localhost:3000/");
+            var request = new RestRequest(Method.POST);
+            request.Resource = this.urlController + "/";
+            request.RequestFormat = DataFormat.Json;
+            var body = new
+            {
+                nombre = usuario.nombre,
+                contrasena = usuario.contrasena,
+                tipo = usuario.tipo
+            };
+            request.AddJsonBody(body);
             var response = restClient.Execute(request);
             return response;
         }
@@ -59,17 +75,38 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
                     {
                         usuario usuario = new usuario();
                         usuario.id = usu.SelectToken("_id").ToString();
-                        usuario.nombre = usu.SelectToken("nombre").ToString();
-                        usuario.contrasena = usu.SelectToken("contrasena").ToString();
-                        usuario.tipo = usu.SelectToken("tipo").ToString();
-                        usuario.date = usu.SelectToken("date").ToString();
-                        if (usu.SelectToken("status") == null)
+                        if (usu.SelectToken("nombre") == null)
                         {
                             usuario.status = "Indefinido";
                         }
                         else
                         {
-                            usuario.status = usu.SelectToken("status").ToString();
+                            usuario.nombre = usu.SelectToken("nombre").ToString();
+                        }
+                        if (usu.SelectToken("contrasena") == null)
+                        {
+                            usuario.status = "Indefinido";
+                        }
+                        else
+                        {
+                            usuario.contrasena = usu.SelectToken("contrasena").ToString();
+                        }
+
+                        if (usu.SelectToken("tipo") == null)
+                        {
+                            usuario.status = "Indefinido";
+                        }
+                        else
+                        {
+                            usuario.tipo = usu.SelectToken("tipo").ToString();
+                        }
+                        if (usu.SelectToken("date") == null)
+                        {
+                            usuario.status = "Indefinido";
+                        }
+                        else
+                        {
+                            usuario.status = usu.SelectToken("date").ToString();
                         }
                         if (usu.SelectToken("correo") == null)
                         {
@@ -108,6 +145,16 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             request.AddParameter("tipo", usuario.tipo);
             var response = restClient.Execute(request);
             return response;
+        }
+
+        virtual public bool registrar(usuario usuario)
+        {
+            var res = RegistarApi(usuario);
+            if (res.IsSuccessful)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

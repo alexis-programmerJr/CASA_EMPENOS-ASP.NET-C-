@@ -20,6 +20,7 @@ namespace CASA_DE_EMPEÑOS.Models
         public string date { get; set; }
         public string status { get; set; }
         public string correo { get; set; }
+
         public static bool SessionStatus = false;
         public static bool EsAdmin;
         public static usuario datosUsuarioActivo;
@@ -61,6 +62,10 @@ namespace CASA_DE_EMPEÑOS.Models
         public usuario Actualizar(string id,usuario usuario) 
         {
             return usuarioBD.Actualizar(id,usuario);
+        }
+        public bool Registrar(usuario usuario)
+        {
+            return usuarioBD.registrar(usuario);
         }
     }
 }
