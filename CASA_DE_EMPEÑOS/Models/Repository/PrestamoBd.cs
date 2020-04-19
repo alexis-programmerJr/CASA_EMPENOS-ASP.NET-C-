@@ -2,39 +2,39 @@
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace CASA_DE_EMPEÑOS.Models.Repository
 {
-    public class UsuarioBD
+    public class PrestamoBD
     {
-        string urlController = "usuarios";
-        public IRestResponse BuscarPorNombreApi(string nombre)
+        string urlController = "prestamos";
+
+
+        public IRestResponse BuscarPorFolioApi(string folio)
         {
             var restClient = new RestClient("http://localhost:3000/");
             var request = new RestRequest(Method.GET);
-            request.Resource = this.urlController + "/" + nombre;
+            request.Resource = this.urlController + "/" + folio;
 
             var response = restClient.Execute(request);
             return response;
         }
-
-        virtual public usuario TranformarUno(IRestResponse jsonRespuesta)
+        virtual public prestamo TranformarUno(IRestResponse jsonRespuesta)
         {
-            usuario usuario = new usuario();
+            prestamo prestamo = new prestamo();
             if (jsonRespuesta.IsSuccessful)
             {
                 if (jsonRespuesta.Content != "null")
                 {
                     JObject jObject = JObject.Parse(jsonRespuesta.Content);
                     string resul = jObject.ToString();
-                    return JsonConvert.DeserializeObject<usuario>(resul);
+                    return JsonConvert.DeserializeObject<prestamo>(resul);
                 }
             }
-            return usuario;
+            return prestamo;
         }
         public IRestResponse BuscarTodos()
         {
@@ -45,7 +45,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             var response = restClient.Execute(request);
             return response;
         }
-        public IRestResponse RegistarApi(usuario usuario)
+        public IRestResponse RegistarApi(prestamo prestamo,string id_cliente)
         {
             var restClient = new RestClient("http://localhost:3000/");
             var request = new RestRequest(Method.POST);
@@ -53,18 +53,20 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             request.RequestFormat = DataFormat.Json;
             var body = new
             {
-                nombre = usuario.nombre,
-                contrasena = usuario.contrasena,
-                tipo = usuario.tipo
+                folio = prestamo.folio,
+                tipo = prestamo.tipo,
+                estatus = "Activo",
+                id_cliente = id_cliente,
+                descripcion = prestamo.descripcion
             };
             request.AddJsonBody(body);
             var response = restClient.Execute(request);
             return response;
         }
-        virtual public List<usuario> TranformarTodos(IRestResponse jsonRespuesta)
+        virtual public List<prestamo> TranformarTodos(IRestResponse jsonRespuesta)
         {
-            
-            List<usuario> usuarios = new List<usuario>();
+
+            List<prestamo> prestamos = new List<prestamo>();
             if (jsonRespuesta.IsSuccessful)
             {
 
@@ -73,69 +75,59 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
                     JArray jObject = JArray.Parse(jsonRespuesta.Content);
                     foreach (var usu in jObject)
                     {
-                        usuario usuario = new usuario();
-                        usuario.id = usu.SelectToken("_id").ToString();
+                        prestamo prestamo = new prestamo();
+                        prestamo.id = usu.SelectToken("_id").ToString();
                         if (usu.SelectToken("nombre") == null)
                         {
-                            usuario.status = "Indefinido";
+                            prestamo.estatus = "Error sin estatus";
                         }
                         else
                         {
-                            usuario.nombre = usu.SelectToken("nombre").ToString();
+                            prestamo.estatus = usu.SelectToken("estatus").ToString();
                         }
-                        if (usu.SelectToken("contrasena") == null)
+                        if (usu.SelectToken("id_cliente") == null)
                         {
-                            usuario.status = "Indefinido";
+                            prestamo.id_cliente = "Error sin cliente asignado";
                         }
                         else
                         {
-                            usuario.contrasena = usu.SelectToken("contrasena").ToString();
+                            prestamo.id_cliente = usu.SelectToken("id_cliente").ToString();
                         }
 
+                        if (usu.SelectToken("descripcion") == null)
+                        {
+                            prestamo.descripcion = "Sin descripcion";
+                        }
+                        else
+                        {
+                            prestamo.descripcion = usu.SelectToken("descripcion").ToString();
+                        }
                         if (usu.SelectToken("tipo") == null)
                         {
-                            usuario.status = "Indefinido";
+                            prestamo.tipo = "error sin tipo";
                         }
                         else
                         {
-                            usuario.tipo = usu.SelectToken("tipo").ToString();
+                            prestamo.tipo = usu.SelectToken("tipo").ToString();
                         }
-                        if (usu.SelectToken("date") == null)
+                        if (usu.SelectToken("folio") == null)
                         {
-                            usuario.status = "Indefinido";
+                            prestamo.folio = "Error sin folio";
                         }
                         else
                         {
-                            usuario.status = usu.SelectToken("date").ToString();
+                            prestamo.folio = usu.SelectToken("folio").ToString();
                         }
-                        if (usu.SelectToken("correo") == null)
-                        {
-                            usuario.correo = "Sin correo";
-                        }
-                        else
-                        {
-                            usuario.correo = usu.SelectToken("correo").ToString();
-                        }
-                       
-                        usuarios.Add(usuario);
+
+                        prestamos.Add(prestamo);
                     }
-                    return usuarios;
+                    return prestamos;
                 }
             }
 
-            return usuarios;
+            return prestamos;
         }
-
-        virtual public usuario Actualizar(string id, usuario usuario) 
-        {
-            usuario DatosActualizado = new usuario();
-            DatosActualizado.nombre = usuario.nombre;
-            DatosActualizado.contrasena = usuario.contrasena;
-            DatosActualizado.tipo = usuario.tipo;
-            var usu = TranformarUno(PeticionApiActualizar(id,DatosActualizado));
-            return usu;
-        }
-        public IRestResponse PeticionApiActualizar(string id,usuario usuario)
+        public IRestResponse PeticionApiActualizar(string id, prestamo prestamo)
         {
             var restClient = new RestClient("http://localhost:3000/");
             var request = new RestRequest(Method.PATCH);
@@ -143,25 +135,30 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             request.RequestFormat = DataFormat.Json;
             var body = new
             {
-                nombre = usuario.nombre,
-                contrasena = usuario.contrasena,
-                tipo = usuario.tipo
+                estatus = prestamo.estatus,
+                descripcion = prestamo.descripcion
             };
             request.AddJsonBody(body);
             var response = restClient.Execute(request);
             return response;
         }
-
-        virtual public bool registrar(usuario usuario)
+        virtual public prestamo Actualizar(string id, prestamo prestamo)
         {
-            var res = RegistarApi(usuario);
+            prestamo DatosActualizado = new prestamo();
+            DatosActualizado.estatus = prestamo.estatus;
+            DatosActualizado.descripcion = prestamo.descripcion;
+            var usu = TranformarUno(PeticionApiActualizar(id, DatosActualizado));
+            return usu;
+        }
+        virtual public bool registrar(prestamo prestamo,string id_cliente)
+        {
+            var res = RegistarApi(prestamo,id_cliente);
             if (res.IsSuccessful)
             {
                 return true;
             }
             return false;
         }
-
         public IRestResponse ElimiarApi(string id)
         {
             var restClient = new RestClient("http://localhost:3000/");
@@ -170,7 +167,6 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             var response = restClient.Execute(request);
             return response;
         }
-
         virtual public bool eliminar(string id)
         {
             if (id != null)
