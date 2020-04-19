@@ -59,13 +59,17 @@ namespace CASA_DE_EMPEÑOS.Models
             var LisUsu = usuarioBD.BuscarTodos();
             return usuarioBD.TranformarTodos(LisUsu);
         }
-        public usuario Actualizar(string id,usuario usuario) 
+        public usuario Actualizar(string id, usuario usuario)
         {
-            return usuarioBD.Actualizar(id,usuario);
+            return usuarioBD.Actualizar(id, usuario);
         }
         public bool Registrar(usuario usuario)
         {
             return usuarioBD.registrar(usuario);
+        }
+        public bool Eliminar(usuario usuario) 
+        {
+            return usuarioBD.eliminar(usuario.id);
         }
     }
 }

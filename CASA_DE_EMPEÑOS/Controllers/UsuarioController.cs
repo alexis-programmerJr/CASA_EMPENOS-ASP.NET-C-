@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace CASA_DE_EMPEÑOS.Controllers
 {
     public class UsuarioController : Controller
     {
+
         usuario usuario_ = new usuario();
         // GET: ListaUsuario
         public ActionResult Index()
         {
+
             List<usuario> ListaUsuarios = usuario_.cargarlista();
             return View(ListaUsuarios);
         }
@@ -75,24 +78,25 @@ namespace CASA_DE_EMPEÑOS.Controllers
         }
 
         // GET: ListaUsuario/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ListaUsuario/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(usuario usuario)
         {
             try
             {
                 // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    var res = usuario.Eliminar(usuario);
+                    if (res == true)
+                    {
+                       return RedirectToAction("Index");
+                    }
+                    return RedirectToAction("Index");
+                }
+                return  RedirectToAction("Index");
             }
             catch
             {
-                return View();
+            return  RedirectToAction("Index");
             }
         }
     }

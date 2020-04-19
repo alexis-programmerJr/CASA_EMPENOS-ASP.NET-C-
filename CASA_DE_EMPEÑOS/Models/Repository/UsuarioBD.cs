@@ -12,7 +12,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
     public class UsuarioBD
     {
         string urlController = "usuarios";
-        virtual public IRestResponse BuscarPorNombreApi(string nombre)
+        public IRestResponse BuscarPorNombreApi(string nombre)
         {
             var restClient = new RestClient("http://localhost:3000/");
             var request = new RestRequest(Method.GET);
@@ -36,7 +36,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             }
             return usuario;
         }
-        virtual public IRestResponse BuscarTodos()
+        public IRestResponse BuscarTodos()
         {
             var restClient = new RestClient("http://localhost:3000/");
             var request = new RestRequest(Method.GET);
@@ -45,7 +45,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             var response = restClient.Execute(request);
             return response;
         }
-        virtual public IRestResponse RegistarApi(usuario usuario)
+        public IRestResponse RegistarApi(usuario usuario)
         {
             var restClient = new RestClient("http://localhost:3000/");
             var request = new RestRequest(Method.POST);
@@ -135,14 +135,19 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             var usu = TranformarUno(PeticionApiActualizar(id,DatosActualizado));
             return usu;
         }
-        virtual public IRestResponse PeticionApiActualizar(string id,usuario usuario)
+        public IRestResponse PeticionApiActualizar(string id,usuario usuario)
         {
             var restClient = new RestClient("http://localhost:3000/");
             var request = new RestRequest(Method.PATCH);
             request.Resource = this.urlController + "/" + id;
-            request.AddParameter("nombre", usuario.nombre);
-            request.AddParameter("contrasena", usuario.contrasena);
-            request.AddParameter("tipo", usuario.tipo);
+            request.RequestFormat = DataFormat.Json;
+            var body = new
+            {
+                nombre = usuario.nombre,
+                contrasena = usuario.contrasena,
+                tipo = usuario.tipo
+            };
+            request.AddJsonBody(body);
             var response = restClient.Execute(request);
             return response;
         }
@@ -153,6 +158,29 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             if (res.IsSuccessful)
             {
                 return true;
+            }
+            return false;
+        }
+
+        public IRestResponse ElimiarUuarioApi(string id)
+        {
+            var restClient = new RestClient("http://localhost:3000/");
+            var request = new RestRequest(Method.DELETE);
+            request.Resource = this.urlController + "/" + id;
+            var response = restClient.Execute(request);
+            return response;
+        }
+
+        virtual public bool eliminar(string id)
+        {
+            if (id != null)
+            {
+                var res = ElimiarUuarioApi(id);
+                if (res.IsSuccessful)
+                {
+                    return true;
+                }
+                return false;
             }
             return false;
         }
