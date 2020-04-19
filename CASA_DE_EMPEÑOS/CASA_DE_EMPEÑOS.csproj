@@ -133,6 +133,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\conexion.cs" />
+    <Compile Include="Models\prestamo.cs" />
+    <Compile Include="Models\Repository\PrestamoBD.cs" />
     <Compile Include="Models\Repository\UsuarioBD.cs" />
     <Compile Include="Models\usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
