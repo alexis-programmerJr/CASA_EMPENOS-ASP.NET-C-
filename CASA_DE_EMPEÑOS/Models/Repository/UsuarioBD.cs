@@ -21,6 +21,15 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             var response = restClient.Execute(request);
             return response;
         }
+        public IRestResponse BuscarPorIdApi(string id)
+        {
+            var restClient = new RestClient("http://localhost:3000/");
+            var request = new RestRequest(Method.GET);
+            request.Resource = this.urlController + "/usuId/" + id;
+
+            var response = restClient.Execute(request);
+            return response;
+        }
 
         virtual public usuario TranformarUno(IRestResponse jsonRespuesta)
         {
@@ -77,15 +86,23 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
                         usuario.id = usu.SelectToken("_id").ToString();
                         if (usu.SelectToken("nombre") == null)
                         {
-                            usuario.status = "Indefinido";
+                            usuario.nombre = "Indefinido";
                         }
                         else
                         {
                             usuario.nombre = usu.SelectToken("nombre").ToString();
                         }
-                        if (usu.SelectToken("contrasena") == null)
+                        if (usu.SelectToken("estatus") == null)
                         {
                             usuario.status = "Indefinido";
+                        }
+                        else
+                        {
+                            usuario.status = usu.SelectToken("nombre").ToString();
+                        }
+                        if (usu.SelectToken("contrasena") == null)
+                        {
+                            usuario.contrasena = "Indefinido";
                         }
                         else
                         {
@@ -94,7 +111,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
 
                         if (usu.SelectToken("tipo") == null)
                         {
-                            usuario.status = "Indefinido";
+                            usuario.tipo = "Indefinido";
                         }
                         else
                         {
@@ -102,11 +119,11 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
                         }
                         if (usu.SelectToken("date") == null)
                         {
-                            usuario.status = "Indefinido";
+                            usuario.date = "Indefinido";
                         }
                         else
                         {
-                            usuario.status = usu.SelectToken("date").ToString();
+                            usuario.date = usu.SelectToken("date").ToString();
                         }
                         if (usu.SelectToken("correo") == null)
                         {

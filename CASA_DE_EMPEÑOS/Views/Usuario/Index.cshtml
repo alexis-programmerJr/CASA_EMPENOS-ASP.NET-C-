@@ -26,45 +26,52 @@
                         <tbody>
                             @foreach (var usuario in Model)
                             {
-                                <tr>
-                                    <td>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
-                                        <a href="#" class="user-link">@usuario.nombre</a>
-                                        <span class="user-subhead">@usuario.tipo</span>
-                                    </td>
-                                    <td>
-                                        @usuario.date
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="label label-default">@usuario.status</span>
-                                    </td>
-                                    <td>
-                                        <a href="#">@usuario.correo</a>
-                                    </td>
-                                    <td style="width: 20%;">
-                                        @Html.ActionLink("Details", "Details", usuario)
-                                        <a href="#" class="table-link">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a> |||
-                                        @Html.ActionLink("Edit", "Edit", usuario)
-                                        <a href="#" class="table-link">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>|||
-                                        @Html.ActionLink("Delete", "Delete", usuario)
-                                        <a href="#" class="table-link danger">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                                    <a href="#" class="user-link">@usuario.nombre</a>
+                                    <span class="user-subhead">@usuario.tipo</span>
+                                </td>
+                                <td>
+                                    @usuario.status
+                                </td>
+                                <td class="text-center">
+                                    <span class="label label-default">@usuario.date</span>
+                                </td>
+                                <td>
+                                    <a href="#">@usuario.correo</a>
+                                </td>
+                                                                <td style="width: 20%;">
+                                @if (ViewBag.EsAdmin == true)
+                                {
+                                    @Html.ActionLink("Edit", "Edit", usuario)
+                                    <a href="#" class="table-link">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+
+                                    @Html.ActionLink("Delete", "Delete", usuario)
+                                    <a href="#" class="table-link danger">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                };
+                                    @Html.ActionLink("Details", "Details", usuario)
+                                    <a href="#" class="table-link">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a> 
+
+
+                                    <a href="@Url.Action("Create", "Prestamo",usuario)">Agregar prestamo</a>
+                                </td>
+                            </tr>
                             }
 
                         </tbody>

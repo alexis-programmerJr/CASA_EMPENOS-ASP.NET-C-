@@ -22,7 +22,7 @@ namespace CASA_DE_EMPEÑOS.Models
         public string correo { get; set; }
 
         public static bool SessionStatus = false;
-        public static bool EsAdmin;
+        public static bool EsAdmin = false;
         public static usuario datosUsuarioActivo;
         public void IniciarSesion(usuario usu)
         {
@@ -31,6 +31,14 @@ namespace CASA_DE_EMPEÑOS.Models
             if (ValidarCredenciales(datosUsuarioActivo.nombre, datosUsuarioActivo.contrasena, usu))
             {
                 SessionStatus = true;
+                if (datosUsuarioActivo.tipo == "Administrador")
+                {
+                    usuario.EsAdmin = true;
+                }
+                else
+                {
+                    usuario.EsAdmin = false;
+                }
             }
             else
             {

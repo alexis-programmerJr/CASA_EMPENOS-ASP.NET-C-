@@ -15,7 +15,18 @@ namespace CASA_DE_EMPEÑOS.Controllers
         // GET: ListaUsuario
         public ActionResult Index()
         {
-
+            if (usuario.SessionStatus == false)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            if (usuario.datosUsuarioActivo.tipo == "Administrador")
+            {
+                ViewBag.EsAdmin = true;
+            }
+            else
+            {
+                ViewBag.EsAdmin = false;
+            }
             List<usuario> ListaUsuarios = usuario_.cargarlista();
             return View(ListaUsuarios);
         }
@@ -99,5 +110,6 @@ namespace CASA_DE_EMPEÑOS.Controllers
             return  RedirectToAction("Index");
             }
         }
+
     }
 }

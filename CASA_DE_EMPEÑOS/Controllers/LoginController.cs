@@ -28,6 +28,10 @@ namespace CASA_DE_EMPEÑOS.Controllers
                 usuario_.IniciarSesion(_usuario);
                 if (usuario.SessionStatus == true)
                 {
+                    if (_usuario.tipo == "Administrador")
+                    {
+                        usuario.EsAdmin = true;
+                    }
                     return RedirectToAction("Index", "Home");
                 }
             }

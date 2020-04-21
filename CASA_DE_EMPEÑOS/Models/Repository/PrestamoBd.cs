@@ -11,7 +11,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
     public class PrestamoBD
     {
         string urlController = "prestamos";
-
+        UsuarioBD UsuarioBD_ = new UsuarioBD();
 
         public IRestResponse BuscarPorFolioApi(string folio)
         {
@@ -45,7 +45,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             var response = restClient.Execute(request);
             return response;
         }
-        public IRestResponse RegistarApi(prestamo prestamo,string id_cliente)
+        public IRestResponse RegistarApi(prestamo prestamo)
         {
             var restClient = new RestClient("http://localhost:3000/");
             var request = new RestRequest(Method.POST);
@@ -55,8 +55,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             {
                 folio = prestamo.folio,
                 tipo = prestamo.tipo,
-                estatus = "Activo",
-                id_cliente = id_cliente,
+                id_cliente = prestamo.id_cliente,
                 descripcion = prestamo.descripcion
             };
             request.AddJsonBody(body);
@@ -77,21 +76,29 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
                     {
                         prestamo prestamo = new prestamo();
                         prestamo.id = usu.SelectToken("_id").ToString();
-                        if (usu.SelectToken("nombre") == null)
+                        if (usu.SelectToken("estatus") == null)
                         {
                             prestamo.estatus = "Error sin estatus";
                         }
                         else
                         {
-                            prestamo.estatus = usu.SelectToken("estatus").ToString();
+                            var status = usu.SelectToken("estatus").ToString();
+                            if (status == "True")
+                            {
+                                prestamo.estatus = "Activo";
+                            }
+                            else
+                            {
+                                prestamo.estatus = "Cancelado";
+                            }
                         }
                         if (usu.SelectToken("id_cliente") == null)
                         {
-                            prestamo.id_cliente = "Error sin cliente asignado";
+                            prestamo.nombre_cliente = "Error sin cliente asignado";
                         }
                         else
                         {
-                            prestamo.id_cliente = usu.SelectToken("id_cliente").ToString();
+                            prestamo.nombre_cliente = UsuarioBD_.TranformarUno(UsuarioBD_.BuscarPorIdApi(usu.SelectToken("id_cliente").ToString())).nombre;
                         }
 
                         if (usu.SelectToken("descripcion") == null)
@@ -126,7 +133,7 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
             }
 
             return prestamos;
-        }
+        }  
         public IRestResponse PeticionApiActualizar(string id, prestamo prestamo)
         {
             var restClient = new RestClient("http://localhost:3000/");
@@ -145,14 +152,17 @@ namespace CASA_DE_EMPEÑOS.Models.Repository
         virtual public prestamo Actualizar(string id, prestamo prestamo)
         {
             prestamo DatosActualizado = new prestamo();
-            DatosActualizado.estatus = prestamo.estatus;
+            DatosActualizado.folio = prestamo.folio;
+            DatosActualizado.id_cliente = prestamo.id_cliente;
+            DatosActualizado.tipo = DatosActualizado.tipo;
+            DatosActualizado.estatus = "Cancelado";
             DatosActualizado.descripcion = prestamo.descripcion;
-            var usu = TranformarUno(PeticionApiActualizar(id, DatosActualizado));
-            return usu;
+            var pres = TranformarUno(PeticionApiActualizar(id, DatosActualizado));
+            return pres;
         }
-        virtual public bool registrar(prestamo prestamo,string id_cliente)
+        virtual public bool registrar(prestamo prestamo)
         {
-            var res = RegistarApi(prestamo,id_cliente);
+            var res = RegistarApi(prestamo);
             if (res.IsSuccessful)
             {
                 return true;

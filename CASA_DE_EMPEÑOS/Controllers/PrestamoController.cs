@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CASA_DE_EMPEÑOS.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,9 +10,11 @@ namespace CASA_DE_EMPEÑOS.Controllers
     public class PrestamoController : Controller
     {
         // GET: Prestamo
+       prestamo prestamo_ = new prestamo();
         public ActionResult Index()
         {
-            return View();
+            List<prestamo> ListaUsuarios = prestamo_.Cargarlista();
+            return View(ListaUsuarios);
         }
 
         // GET: Prestamo/Details/5
@@ -28,11 +31,20 @@ namespace CASA_DE_EMPEÑOS.Controllers
 
         // POST: Prestamo/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FormCollection collection, usuario usuario)
         {
             try
             {
                 // TODO: Add insert logic here
+                prestamo prestamo = new prestamo();
+                prestamo.id_cliente = usuario.id;
+                prestamo.folio = crearFolioAleatoio();
+                prestamo.descripcion = collection.Get("descripcion");
+                prestamo.tipo = collection.Get("tipo");
+                if (prestamo.Registrar(prestamo))
+                {
+                    return RedirectToAction("Index");
+                }
 
                 return RedirectToAction("Index");
             }
@@ -84,6 +96,11 @@ namespace CASA_DE_EMPEÑOS.Controllers
             {
                 return View();
             }
+        }
+        string crearFolioAleatoio() 
+        {
+            Random rnd = new Random();
+            return rnd.Next().ToString();
         }
     }
 }
