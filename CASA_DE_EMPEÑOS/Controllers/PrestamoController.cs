@@ -7,60 +7,44 @@ using System.Web.Mvc;
 
 namespace CASA_DE_EMPEÑOS.Controllers
 {
-    public class LoginController : Controller
+    public class PrestamoController : Controller
     {
-        static bool FirstEnter = true;
-        usuario usuario_ = new usuario();
-        // GET: Login
-        public ActionResult Index(usuario _usuario)
+        // GET: Prestamo
+       prestamo prestamo_ = new prestamo();
+        public ActionResult Index()
         {
-            if (usuario.SessionStatus == false)
-            {
-                if (FirstEnter)
-                {
-                    FirstEnter = false;
-                    return View();
-                }
-                if (_usuario.nombre == null || _usuario.contrasena == null)
-                {
-                    return View();
-                }
-                usuario_.IniciarSesion(_usuario);
-                if (usuario.SessionStatus == true)
-                {
-                    if (_usuario.tipo == "Administrador")
-                    {
-                        usuario.EsAdmin = true;
-                    }
-                    return RedirectToAction("Index", "Home");
-                }
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            return View();
+            List<prestamo> ListaUsuarios = prestamo_.Cargarlista();
+            return View(ListaUsuarios);
         }
 
-        // GET: Login/Details/5
+        // GET: Prestamo/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Login/Create
+        // GET: Prestamo/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Login/Create
+        // POST: Prestamo/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FormCollection collection, usuario usuario)
         {
             try
             {
                 // TODO: Add insert logic here
+                prestamo prestamo = new prestamo();
+                prestamo.id_cliente = usuario.id;
+                prestamo.folio = crearFolioAleatoio();
+                prestamo.descripcion = collection.Get("descripcion");
+                prestamo.tipo = collection.Get("tipo");
+                if (prestamo.Registrar(prestamo))
+                {
+                    return RedirectToAction("Index");
+                }
 
                 return RedirectToAction("Index");
             }
@@ -70,13 +54,13 @@ namespace CASA_DE_EMPEÑOS.Controllers
             }
         }
 
-        // GET: Login/Edit/5
+        // GET: Prestamo/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Login/Edit/5
+        // POST: Prestamo/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -92,13 +76,13 @@ namespace CASA_DE_EMPEÑOS.Controllers
             }
         }
 
-        // GET: Login/Delete/5
+        // GET: Prestamo/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Login/Delete/5
+        // POST: Prestamo/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -113,6 +97,10 @@ namespace CASA_DE_EMPEÑOS.Controllers
                 return View();
             }
         }
-
+        string crearFolioAleatoio() 
+        {
+            Random rnd = new Random();
+            return rnd.Next().ToString();
+        }
     }
 }

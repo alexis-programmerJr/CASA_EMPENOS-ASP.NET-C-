@@ -1,0 +1,57 @@
+﻿@model List<CASA_DE_EMPEÑOS.Models.prestamo>
+
+<script src="~/Scripts/mensajes.js"></script>
+<link href="toastr.css" rel="stylesheet" />
+<link href="~/CSS/StyleListUser.css" rel="stylesheet" />
+<script src="toastr.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="wrapper fadeInDown">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <div class="table-responsive">
+                    <table class="table user-list">
+                        <thead>
+                            <tr>
+                                <th><span>Folio</span></th>
+                                <th><span>Fecha de registro</span></th>
+                                <th class="text-center"><span>Tipo</span></th>
+                                <th class="text-center"><span>Estatus</span></th>
+                                <th><span>Descripcion</span></th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prestamo in Model)
+                            {
+                            <tr>
+                                <td>
+                                    <a href="#" class="user-link">@prestamo.folio</a>
+                                    <span class="user-subhead">@prestamo.nombre_cliente</span>
+                                </td>
+                                <td>
+                                    @prestamo.date
+                                </td>
+                                <td class="text-center">
+                                    <span class="label label-default">@prestamo.tipo</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="label label-default">@prestamo.estatus</span>
+                                </td>
+                                <td>
+                                    <a href="#">@prestamo.descripcion</a>
+                                </td>
+                            </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
